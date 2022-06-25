@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
         body: ScrollableCleanCalendar(
           calendarController: calendarController,
           layout: Layout.BEAUTY,
+          locale: "zh",
           calendarCrossAxisSpacing: 0,
         ),
       ),
