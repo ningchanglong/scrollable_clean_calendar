@@ -7,22 +7,67 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  final calendarController = CleanCalendarController(
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+   final CleanCalendarController calendarController = CleanCalendarController(
     minDate: DateTime.now(),
-    maxDate: DateTime.now().add(const Duration(days: 365)),
+    maxDate: DateTime.now().add(const Duration(days: 100)),
+    showRefresh: true,
     onRangeSelected: (firstDate, secondDate) {},
     onDayTapped: (date) {},
     // readOnly: true,
     onPreviousMinDateTapped: (date) {},
     onAfterMaxDateTapped: (date) {},
     weekdayStart: DateTime.monday,
+
     // initialDateSelected: DateTime(2022, 3, 15),
-    // endDateSelected: DateTime(2022, 3, 20),
+    // endDateSelected: DateTime.now(),
   );
+
+   final Counter _counter = Counter();
+
+
+   @override
+  void initState() {
+     calendarController.onLoad = () async {
+      await Future.delayed(Duration(seconds: 2), () {
+        calendarController.updateMonths(endDate: calendarController.maxDate.add(const Duration(days: 365)));
+      });
+    };
+     calendarController.onRefresh = () async {
+       await Future.delayed(Duration(seconds: 2), () {
+         calendarController.resetMonths(endDate: DateTime.now().add(const Duration(days: 100)));
+       });
+     };
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    // return MaterialApp(
+    //   title: 'Material App',
+    //   home: Scaffold(
+    //     appBar: AppBar(
+    //       title: Text('Material App Bar'),
+    //     ),
+    //     body: Center(
+    //       child: Container(
+    //         child: RaisedButton(
+    //             onPressed: (){
+    //               _counter.addCount();
+    //             },
+    //             child: Text('计数:${_counter.count}'),
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
     return MaterialApp(
       title: 'Scrollable Clean Calendar',
       theme: ThemeData(
@@ -63,4 +108,18 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+
+class Counter extends ChangeNotifier{
+  int _count = 0;//数值计算
+
+  int get count => _count;
+
+  addCount(){
+    _count++;
+    notifyListeners();
+
+  }
+
 }
