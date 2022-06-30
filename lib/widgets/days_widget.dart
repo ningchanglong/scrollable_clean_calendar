@@ -92,7 +92,7 @@ class DaysWidget extends StatelessWidget {
 
         Widget widget;
 
-        String key = DateFormat("dd MMMM y").format(month);
+        String key = DateFormat("dd MMMM y").format(day);
         int? value = dateMap?[key];
 
         final dayValues = DayValues(
