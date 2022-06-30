@@ -216,7 +216,7 @@ class _ScrollableCleanCalendarState extends State<ScrollableCleanCalendar> {
       header: widget.calendarController.header,
       footer: widget.calendarController.footer,
       onRefresh: ()async {
-        widget.calendarController.onRefresh?.call();
+        await widget.calendarController.onRefresh?.call();
       },
 
       onLoad: () async {
