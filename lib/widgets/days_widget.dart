@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
 import 'package:scrollable_clean_calendar/models/day_values_model.dart';
 import 'package:scrollable_clean_calendar/utils/enums.dart';
@@ -21,7 +22,7 @@ class DaysWidget extends StatelessWidget {
   final Color? dayDisableColor;
   final double radius;
   final TextStyle? textStyle;
-  final bool enable;
+  final Map<dynamic,dynamic>? dateMap;
   const DaysWidget({
     Key? key,
     required this.month,
@@ -37,7 +38,7 @@ class DaysWidget extends StatelessWidget {
     required this.dayDisableColor,
     required this.radius,
     required this.textStyle,
-    required this.enable,
+    this.dateMap,
   }) : super(key: key);
 
   @override
@@ -91,7 +92,11 @@ class DaysWidget extends StatelessWidget {
 
         Widget widget;
 
+        String key = DateFormat("dd MMMM y").format(month);
+        int? value = dateMap?[key];
+
         final dayValues = DayValues(
+          enable: value == 1 ? false : true,
           day: day,
           isFirstDayOfWeek: day.weekday == cleanCalendarController.weekdayStart,
           isLastDayOfWeek: day.weekday == cleanCalendarController.weekdayEnd,
@@ -114,7 +119,7 @@ class DaysWidget extends StatelessWidget {
 
         return GestureDetector(
           onTap: () {
-            if(enable == false) return;
+            if(value == 1) return;
             if (day.isBefore(cleanCalendarController.minDate) &&
                 !day.isSameDay(cleanCalendarController.minDate)) {
               if (cleanCalendarController.onPreviousMinDateTapped != null) {

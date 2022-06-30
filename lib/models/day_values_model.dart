@@ -27,6 +27,8 @@ class DayValues {
   /// The max date
   final DateTime maxDate;
 
+  final bool enable;
+
   DayValues({
     required this.day,
     required this.text,
@@ -37,5 +39,6 @@ class DayValues {
     this.selectedMaxDate,
     required this.minDate,
     required this.maxDate,
+    required this.enable,
   });
 }
