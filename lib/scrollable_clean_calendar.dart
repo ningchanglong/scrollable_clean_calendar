@@ -129,9 +129,10 @@ class _ScrollableCleanCalendarState extends State<ScrollableCleanCalendar> {
       if(widget.calendarController.isLoading == false) {
         _controller.resetRefreshState();
         _controller.resetLoadState();
-        setState(() {
-
-        });
+        if(mounted) {
+          setState(() {
+          });
+        }
       }
     });
   }
