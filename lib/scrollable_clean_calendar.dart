@@ -3,6 +3,7 @@ library scrollable_clean_calendar;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
 import 'package:scrollable_clean_calendar/models/day_values_model.dart';
 import 'package:scrollable_clean_calendar/utils/enums.dart';
@@ -81,6 +82,8 @@ class ScrollableCleanCalendar extends StatefulWidget {
   /// The controller of ScrollableCleanCalendar
   final CleanCalendarController calendarController;
 
+  final Map<dynamic,dynamic>? dateMap;
+
   const ScrollableCleanCalendar({
     this.locale = 'en',
     this.scrollController,
@@ -104,6 +107,7 @@ class ScrollableCleanCalendar extends StatefulWidget {
     this.dayDisableColor,
     this.dayTextStyle,
     this.dayRadius = 6,
+    this.dateMap,
     required this.calendarController,
   }) : assert(layout != null ||
             (monthBuilder != null &&
@@ -179,7 +183,10 @@ class _ScrollableCleanCalendarState extends State<ScrollableCleanCalendar> {
                 AnimatedBuilder(
                   animation: widget.calendarController,
                   builder: (_, __) {
+                    String key = DateFormat("dd MMMM y").format(month);
+                    int? value = widget.dateMap?[key];
                     return DaysWidget(
+                      enable: value == 1 ? false : true,
                       month: month,
                       cleanCalendarController: widget.calendarController,
                       calendarCrossAxisSpacing: widget.calendarCrossAxisSpacing,
@@ -259,7 +266,10 @@ class _ScrollableCleanCalendarState extends State<ScrollableCleanCalendar> {
                   AnimatedBuilder(
                     animation: widget.calendarController,
                     builder: (_, __) {
+                      String key = DateFormat("dd MMMM y").format(month);
+                      int? value = widget.dateMap?[key];
                       return DaysWidget(
+                        enable: value == 1 ? false : true,
                         month: month,
                         cleanCalendarController: widget.calendarController,
                         calendarCrossAxisSpacing: widget.calendarCrossAxisSpacing,

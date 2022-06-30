@@ -21,7 +21,7 @@ class DaysWidget extends StatelessWidget {
   final Color? dayDisableColor;
   final double radius;
   final TextStyle? textStyle;
-
+  final bool enable;
   const DaysWidget({
     Key? key,
     required this.month,
@@ -37,6 +37,7 @@ class DaysWidget extends StatelessWidget {
     required this.dayDisableColor,
     required this.radius,
     required this.textStyle,
+    required this.enable,
   }) : super(key: key);
 
   @override
@@ -113,6 +114,7 @@ class DaysWidget extends StatelessWidget {
 
         return GestureDetector(
           onTap: () {
+            if(enable == false) return;
             if (day.isBefore(cleanCalendarController.minDate) &&
                 !day.isSameDay(cleanCalendarController.minDate)) {
               if (cleanCalendarController.onPreviousMinDateTapped != null) {

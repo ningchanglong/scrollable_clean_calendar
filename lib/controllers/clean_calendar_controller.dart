@@ -52,6 +52,8 @@ class CleanCalendarController extends ChangeNotifier {
 
   late Future<void> Function()? onLoad;
 
+
+
   CleanCalendarController({
     required this.minDate,
     required this.maxDate,
