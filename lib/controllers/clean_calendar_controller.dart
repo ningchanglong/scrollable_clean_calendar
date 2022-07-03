@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_clean_calendar/utils/extensions.dart';
+import 'package:time/time.dart';
 
 class CleanCalendarController extends ChangeNotifier {
   /// Obrigatory: The mininimum date to show
@@ -48,6 +49,10 @@ class CleanCalendarController extends ChangeNotifier {
 
   late Footer? footer;
 
+  late bool isMonth;
+
+  late Map<dynamic,dynamic>? dateMap;
+
   late Future<void> Function()? onRefresh;
 
   late Future<void> Function()? onLoad;
@@ -71,6 +76,8 @@ class CleanCalendarController extends ChangeNotifier {
     this.onLoad,
     this.header,
     this.footer,
+    this.isMonth = false,
+    this.dateMap,
     this.weekdayStart = DateTime.monday,
   })  : assert(weekdayStart <= DateTime.sunday),
         assert(weekdayStart >= DateTime.monday) {
@@ -124,13 +131,29 @@ class CleanCalendarController extends ChangeNotifier {
 
   void onDayClick(DateTime date, {bool update = true}) {
     if (rangeMode) {
-      if (rangeMinDate == null || rangeMaxDate != null) {
+      if(isMonth) {
+        DateTime lastDay =  date.lastDayOfMonth;
+        String key = DateFormat("dd MMMM y").format(lastDay);
+        int? value = dateMap?[key];
+        while(value == 1) {
+          lastDay = lastDay.copyWith(day: lastDay.day - 1);
+          String key = DateFormat("dd MMMM y").format(lastDay);
+          value = dateMap?[key];
+        };
+
+        rangeMinDate = date;
+        rangeMaxDate = lastDay;
+
+      }
+      else if (rangeMinDate == null || rangeMaxDate != null) {
         rangeMinDate = date;
         rangeMaxDate = null;
-      } else if (date.isBefore(rangeMinDate!)) {
+      }
+      else if (date.isBefore(rangeMinDate!)) {
         rangeMaxDate = rangeMinDate;
         rangeMinDate = date;
-      } else if (date.isAfter(rangeMinDate!) || date.isSameDay(rangeMinDate!)) {
+      }
+      else if (date.isAfter(rangeMinDate!) || date.isSameDay(rangeMinDate!)) {
         rangeMaxDate = date;
       }
     } else {
