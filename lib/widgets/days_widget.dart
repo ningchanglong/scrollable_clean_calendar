@@ -120,6 +120,7 @@ class DaysWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             if(value == 1) return;
+            if(!day.isSameDay(DateTime.now()) && day.isBefore(DateTime.now())) return;
             if (day.isBefore(cleanCalendarController.minDate) &&
                 !day.isSameDay(cleanCalendarController.minDate)) {
               if (cleanCalendarController.onPreviousMinDateTapped != null) {
